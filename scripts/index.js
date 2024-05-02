@@ -20,8 +20,6 @@ function cardItem(name, link, delBtn) {
 // @todo: Функция удаления карточки
 function delBtn(event) {
     const listItem = event.target.closest('.card');
-    const list = event.target;
-    console.log(list)
     listItem.remove();
 };
 
