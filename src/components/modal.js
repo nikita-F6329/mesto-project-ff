@@ -8,10 +8,10 @@ import {
   titleInput,
   linkInput,
   profileTitle,
-  profileDescription
+  profileDescription,
 } from "../index.js";
 
-import {addCard, deleteCard} from "./card.js"
+import { addCard, deleteCard } from "./card.js";
 
 // @todo: Функция открытия popup
 function openModal(popup) {
@@ -65,17 +65,17 @@ function closeModalOverlay(event) {
 
 // @todo: Форма добавления карточек
 function addNewCard(event) {
-    event.preventDefault();
-    cardList.prepend(addCard(titleInput.value, linkInput.value, deleteCard));
-    closeModal(popupTypeNewCard);
-  }
-  
-  // @todo: Редактирование имени и информации о себе
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    profileTitle.textContent = nameInput.value;
-    profileDescription.textContent = jobInput.value;
-    closeModal(popupTypeEdit);
-  }
+  event.preventDefault();
+  cardList.prepend(addCard(titleInput.value, linkInput.value, deleteCard));
+  closeModal(popupTypeNewCard);
+}
 
-export { openModal, openModalImg, closeModal,addNewCard, handleFormSubmit };
+// @todo: Редактирование имени и информации о себе
+function handleFormSubmit(event) {
+  event.preventDefault();
+  profileTitle.textContent = nameInput.value;
+  profileDescription.textContent = jobInput.value;
+  closeModal(popupTypeEdit);
+}
+
+export { openModal, openModalImg, closeModal, addNewCard, handleFormSubmit };

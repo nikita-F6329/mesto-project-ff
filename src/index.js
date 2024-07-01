@@ -1,12 +1,14 @@
 import "./pages/index.css";
 
-import { initialCards } from "./scripts/cards.js";
+import { initialCards } from "./components/cards.js";
+import { addCard, deleteCard, likeButton } from "./components/card.js";
 import {
-  addCard,
-  deleteCard,
-  likeButton,
-} from "./components/card.js";
-import { openModal, openModalImg, closeModal, addNewCard, handleFormSubmit } from "./components/modal.js";
+  openModal,
+  openModalImg,
+  closeModal,
+  addNewCard,
+  handleFormSubmit,
+} from "./components/modal.js";
 
 export {
   cardTemplate,
