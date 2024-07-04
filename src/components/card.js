@@ -1,7 +1,8 @@
-import { cardTemplate } from "../index.js";
+// @todo: Темплейт карточки
+const cardTemplate = document.querySelector("#card-template").content;
 
 // @todo: Функция создания карточки
-function addCard(name, link, deleteCard, likeButton) {
+function addCard(name, link, deleteCard, openPopupData, likeButton) {
   const copyTemplate = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = copyTemplate.querySelector(".card__image");
   cardImage.src = link;
@@ -10,6 +11,13 @@ function addCard(name, link, deleteCard, likeButton) {
   copyTemplate
     .querySelector(".card__delete-button")
     .addEventListener("click", deleteCard);
+  copyTemplate
+    .querySelector(".card__like-button")
+    .addEventListener("click", likeButton);
+
+  cardImage.addEventListener("click", function () {
+    openPopupData(link, name);
+  });
 
   return copyTemplate;
 }
@@ -22,10 +30,7 @@ function deleteCard(event) {
 
 // @todo: Лайк карточки
 function likeButton(event) {
-  const cardLikeButton = document.querySelectorAll(".card__like-button");
-  if (event.target.classList.contains("card__like-button")) {
-    event.target.classList.toggle("card__like-button_is-active");
-  }
+  event.target.classList.toggle("card__like-button_is-active");
 }
 
 export { addCard, deleteCard, likeButton };
