@@ -10,14 +10,13 @@ function closeModal(popup) {
   popup.classList.remove("popup_is-opened");
   document.body.style.overflow = "";
   document.removeEventListener("keydown", closeModalEsc);
-  popup.removeEventListener("click", closeModalOverlay);
+  popup.removeEventListener("mousedown", closeModalOverlay);
 }
 
 // @todo: Функция закрытия popup кликом на esc
 function closeModalEsc(event) {
-  const key = event.keyCode;
-  const openPopup = document.querySelector(".popup_is-opened");
   if (event.key === "Escape") {
+    const openPopup = document.querySelector(".popup_is-opened");
     closeModal(openPopup);
   }
 }
