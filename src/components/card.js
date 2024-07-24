@@ -2,21 +2,53 @@
 const cardTemplate = document.querySelector("#card-template").content;
 
 // @todo: Функция создания карточки
-function addCard(name, link, deleteCard, openPopupData, likeButton) {
+function addCard(
+  cardData,
+  openPopupData,
+  deleteCard,
+  cardLikeAdd,
+  userId,
+  deletingCardServer,
+  likeRequest,
+  deleteLikeRequest
+) {
   const copyTemplate = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = copyTemplate.querySelector(".card__image");
-  cardImage.src = link;
-  cardImage.alt = name;
-  copyTemplate.querySelector(".card__title").textContent = name;
-  copyTemplate
-    .querySelector(".card__delete-button")
-    .addEventListener("click", deleteCard);
-  copyTemplate
-    .querySelector(".card__like-button")
-    .addEventListener("click", likeButton);
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  copyTemplate.querySelector(".card__title").textContent = cardData.name;
+  const cardLike = copyTemplate.querySelector(".card__like-button");
+  const likeCounter = copyTemplate.querySelector(".like-counter");
+
+  const deleteButton = copyTemplate.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", function (event) {
+    deletingCardServer(cardData._id).then(() => {
+      deleteCard(event);
+    });
+  });
+
+  likeCounter.textContent = cardData.likes.length;
+  if (userId !== cardData.owner._id) {
+    deleteButton.style.display = "none";
+  }
+
+  cardLike.addEventListener("click", function () {
+    cardLikeAdd(
+      cardData,
+      cardLike,
+      likeCounter,
+      userId,
+      likeRequest,
+      deleteLikeRequest
+    );
+  });
+
+  if (likeCheck(cardData, userId)) {
+    cardLike.classList.add("card__like-button_is-active");
+  }
 
   cardImage.addEventListener("click", function () {
-    openPopupData(link, name);
+    openPopupData(cardData.link, cardData.name);
   });
 
   return copyTemplate;
@@ -28,9 +60,38 @@ function deleteCard(event) {
   listItem.remove();
 }
 
-// @todo: Лайк карточки
-function likeButton(event) {
-  event.target.classList.toggle("card__like-button_is-active");
+// Функция лайка карточки
+function cardLikeAdd(
+  cardData,
+  cardLike,
+  likeCounter,
+  userId,
+  likeRequest,
+  deleteLikeRequest
+) {
+  if (!likeCheck(cardData, userId)) {
+    likeRequest(cardData._id)
+      .then((data) => {
+        console.log(data);
+        cardLike.classList.add("card__like-button_is-active");
+        likeCounter.textContent = data.likes.length;
+        cardData.likes = data.likes;
+      })
+      .catch((err) => console.log(err));
+  } else {
+    deleteLikeRequest(cardData._id)
+      .then((data) => {
+        cardLike.classList.remove("card__like-button_is-active");
+        likeCounter.textContent = data.likes.length;
+        cardData.likes = data.likes;
+      })
+      .catch((err) => console.log(err));
+  }
 }
 
-export { addCard, deleteCard, likeButton };
+// Функция проверки лайка на карточке
+function likeCheck(cardData, userId) {
+  return cardData.likes.some((like) => like._id === userId);
+}
+
+export { addCard, deleteCard, cardLikeAdd };

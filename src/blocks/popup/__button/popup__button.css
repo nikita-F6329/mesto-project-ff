@@ -25,3 +25,11 @@
     line-height: 17px;
   }
 }
+
+.button_inactive {
+  pointer-events: none;
+  user-select: none;
+  color: #B8B8B8;
+  border: 1px solid #B8B8B8;
+  background-color: #F6F6F6;
+}
