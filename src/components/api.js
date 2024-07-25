@@ -10,6 +10,7 @@ function handleResponse(response) {
   if (response.ok) {
     return response.json();
   }
+  return Promise.reject(`Ошибка: ${response.status}`);
 }
 
 // @todo: Загрузка информации о пользователе с сервера

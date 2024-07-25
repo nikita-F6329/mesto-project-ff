@@ -1,6 +1,6 @@
 import "./pages/index.css";
 
-import { addCard, deleteCard, cardLikeAdd } from "./components/card.js";
+import { addCard, deleteCard, addLikeCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import {
@@ -49,7 +49,7 @@ const submitButtonPlaceForm = newPlaceForm.querySelector(".popup__button");
 
 const avatarForm = document.forms.updateAvatar;
 const avatarInput = avatarForm.inputAvatar;
-const submitButtonAvatar = avatarForm.querySelectorAll(".popup__button");
+const submitButtonAvatar = avatarForm.querySelector(".popup__button");
 
 // @todo: Объект настроек валидации
 const validationConfig = {
@@ -126,12 +126,13 @@ avatarForm.addEventListener("submit", function (event) {
   editingAvatar(avatarInput.value)
     .then((data) => {
       profileImage.style.backgroundImage = `url(${data.avatar})`;
+      closeModal(popupAvatar)
     })
     .catch((error) => {
       console.log(error);
     })
     .finally(() => {
-      renderLoading(false, submitButton);
+      renderLoading(false, submitButtonAvatar);                                111111111111111111111
     });
 });
 
@@ -145,13 +146,14 @@ function addNewCardFormSubmit(event) {
           cardData,
           openPopupData,
           deleteCard,
-          cardLikeAdd,
+          addLikeCard,
           userId,
           deletingCardServer,
           likeRequest,
           deleteLikeRequest
         )
       );
+      closeModal(popupTypeNewCard);
     })
     .catch((error) => {
       console.log(error);
@@ -161,7 +163,6 @@ function addNewCardFormSubmit(event) {
     });
   titleInput.value = "";
   linkInput.value = "";
-  closeModal(popupTypeNewCard);
 }
 
 newPlaceForm.addEventListener("submit", addNewCardFormSubmit);
@@ -181,7 +182,7 @@ Promise.all([requestServer(), uploadingCards()])
           elementData,
           openPopupData,
           deleteCard,
-          cardLikeAdd,
+          addLikeCard,
           userId,
           deletingCardServer,
           likeRequest,

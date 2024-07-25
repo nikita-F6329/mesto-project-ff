@@ -51,7 +51,7 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function buttonDisabled(inputList, validationConfig) {
+function disabledButton(inputList, validationConfig) {
   const formButton = document.querySelectorAll(
     validationConfig.submitButtonSelector
   );
@@ -64,11 +64,11 @@ function setEventListeners(formElement, validationConfig) {
   const inputList = Array.from(
     formElement.querySelectorAll(validationConfig.inputSelector)
   );
-  buttonDisabled(inputList, validationConfig);
+  disabledButton(inputList, validationConfig);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", function () {
       checkInputValidity(formElement, inputElement, validationConfig);
-      buttonDisabled(inputList, validationConfig);
+      disabledButton(inputList, validationConfig);
     });
   });
 }

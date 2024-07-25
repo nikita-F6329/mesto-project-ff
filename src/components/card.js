@@ -6,7 +6,7 @@ function addCard(
   cardData,
   openPopupData,
   deleteCard,
-  cardLikeAdd,
+  addLikeCard,
   userId,
   deletingCardServer,
   likeRequest,
@@ -24,7 +24,8 @@ function addCard(
   deleteButton.addEventListener("click", function (event) {
     deletingCardServer(cardData._id).then(() => {
       deleteCard(event);
-    });
+    })
+    .catch((error) => console.log(error));
   });
 
   likeCounter.textContent = cardData.likes.length;
@@ -33,7 +34,7 @@ function addCard(
   }
 
   cardLike.addEventListener("click", function () {
-    cardLikeAdd(
+    addLikeCard(
       cardData,
       cardLike,
       likeCounter,
@@ -43,7 +44,7 @@ function addCard(
     );
   });
 
-  if (likeCheck(cardData, userId)) {
+  if (checkLike(cardData, userId)) {
     cardLike.classList.add("card__like-button_is-active");
   }
 
@@ -61,7 +62,7 @@ function deleteCard(event) {
 }
 
 // Функция лайка карточки
-function cardLikeAdd(
+function addLikeCard(
   cardData,
   cardLike,
   likeCounter,
@@ -69,15 +70,14 @@ function cardLikeAdd(
   likeRequest,
   deleteLikeRequest
 ) {
-  if (!likeCheck(cardData, userId)) {
+  if (!checkLike(cardData, userId)) {
     likeRequest(cardData._id)
       .then((data) => {
-        console.log(data);
         cardLike.classList.add("card__like-button_is-active");
         likeCounter.textContent = data.likes.length;
         cardData.likes = data.likes;
       })
-      .catch((err) => console.log(err));
+      .catch((error) => console.log(error));
   } else {
     deleteLikeRequest(cardData._id)
       .then((data) => {
@@ -85,13 +85,13 @@ function cardLikeAdd(
         likeCounter.textContent = data.likes.length;
         cardData.likes = data.likes;
       })
-      .catch((err) => console.log(err));
+      .catch((error) => console.log(error));
   }
 }
 
 // Функция проверки лайка на карточке
-function likeCheck(cardData, userId) {
+function checkLike(cardData, userId) {
   return cardData.likes.some((like) => like._id === userId);
 }
 
-export { addCard, deleteCard, cardLikeAdd };
+export { addCard, deleteCard, addLikeCard };
